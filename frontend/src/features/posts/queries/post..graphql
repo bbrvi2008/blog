@@ -1,0 +1,7 @@
+query Post($id: ID) {
+  item: post(id: $id) {
+    data {
+      ...PostDetailItem
+    }
+  }
+}

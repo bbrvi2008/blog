@@ -2,5 +2,14 @@
   "extends": "next/core-web-vitals",
   "rules": {
     "arrow-body-style": ["warn", "always"]
-  }
+  },
+  "overrides": [{
+    "files": ["*.graphql"],
+    "parser": "@graphql-eslint/eslint-plugin",
+    "plugins": ["@graphql-eslint"],
+    "rules": {
+      "@graphql-eslint/unique-fragment-name": "error",
+      "@graphql-eslint/unique-operation-name": "error"
+    }
+  }]
 }

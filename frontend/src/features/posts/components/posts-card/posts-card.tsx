@@ -10,8 +10,7 @@ import {
   Chip,
 } from '@mui/material'
 import React from 'react'
-
-export type PostsCardProps = Post
+import { PostsCardProps } from './types'
 
 const PostsCard: React.FC<PostsCardProps> = ({ id, attributes }) => {
   return (
@@ -37,14 +36,14 @@ const PostsCard: React.FC<PostsCardProps> = ({ id, attributes }) => {
             }}
           >
             <Box sx={{ display: 'flex', gap: 1 }}>
-              {attributes.category.data && (
+              {attributes?.category?.data && (
                 <Chip
                   label={attributes.category.data.attributes.title}
                   size="small"
                   color="primary"
                 />
               )}
-              {attributes.createdAt && (
+              {attributes?.createdAt && (
                 <Typography
                   component="div"
                   variant="subtitle1"

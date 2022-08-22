@@ -1,10 +1,15 @@
-import { postsApi, PostsList } from '@features/posts'
+import { PostsList } from '@features/posts'
 import { Container } from '@mui/material'
+import { generatedApi } from '@services/graphql-api'
+import { PostEntityResponseCollection } from '@services/graphql-api/graphql'
+
 import type { NextPage } from 'next'
 import Head from 'next/head'
 
 const Home: NextPage = () => {
-  const { data } = postsApi.useGetPostsQuery()
+  const { data } = generatedApi.usePostsQuery()
+
+  console.log('Home', data?.list)
 
   return (
     <Container maxWidth="lg" sx={{ textAlign: 'center' }}>

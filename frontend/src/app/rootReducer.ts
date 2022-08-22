@@ -1,7 +1,7 @@
 import { combineReducers } from '@reduxjs/toolkit'
 
-import { posts } from '@features'
+import { generatedApi } from '@services/graphql-api'
 
 export const rootReducer = combineReducers({
-  [posts.postsApi.reducerPath]: posts.postsApi.reducer,
+  [generatedApi.reducerPath]: generatedApi.reducer,
 })

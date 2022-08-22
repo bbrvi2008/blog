@@ -3,10 +3,9 @@ import React from 'react'
 import { PostsCard } from '../posts-card'
 
 import { List, ListItem } from '@mui/material'
+import { PostsListProps } from './types'
 
-export type PostsListProps = PostList
-
-const PostsList: React.FC<PostsListProps> = ({ data, meta }) => {
+const PostsList: React.FC<PostsListProps> = ({ data }) => {
   return (
     <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
       {data.map((post) => {

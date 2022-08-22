@@ -1,0 +1,19 @@
+overwrite: true
+watch: true
+schema: 'http://localhost:900/graphql'
+documents: './src/**/*.graphql'
+generates:
+  src/services/graphql-api/graphql.ts:
+    plugins:
+      - typescript:
+          skipTypename: true
+      - typescript-operations:
+          preResolveTypes: false
+          skipTypeNameForRoot: true
+          skipTypename: true
+      - typescript-rtk-query:
+          importBaseApiFrom: 'src/services/graphql-api/base-api'
+          exportHooks: true
+    config:
+      maybeValue: T
+      avoidOptionals: true
