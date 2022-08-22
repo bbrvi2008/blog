@@ -1,0 +1,45 @@
+fragment PostListItem on PostEntity {
+  id
+  attributes {
+    title
+    description
+    text
+    image {
+      data {
+        attributes {
+          url
+        }
+      }
+    }
+    category {
+      data {
+        id
+        attributes {
+          title
+        }
+      }
+    }
+    createdAt
+    updatedAt
+    publishedAt
+  }
+}
+
+fragment PostDetailItem on PostEntity {
+  id
+  attributes {
+    title
+    text
+    category {
+      data {
+        id
+        attributes {
+          title
+        }
+      }
+    }
+    createdAt
+    updatedAt
+    publishedAt
+  }
+}

@@ -1,0 +1,15 @@
+query Posts {
+  list: posts {
+    data {
+      ...PostListItem
+    }
+    meta {
+      pagination {
+        total
+        page
+        pageSize
+        pageCount
+      }
+    }
+  }
+}
