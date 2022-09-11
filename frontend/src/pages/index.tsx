@@ -1,15 +1,20 @@
 import { PostsList } from '@features/posts'
 import { Container } from '@mui/material'
-import { generatedApi } from '@services/graphql-api'
-import { PostEntityResponseCollection } from '@services/graphql-api/graphql'
+
+import { withUrqlClient, initUrqlClient } from 'next-urql'
+import { ssrExchange, dedupExchange, cacheExchange, fetchExchange } from 'urql'
 
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import {
+  Posts,
+  PostsDocument,
+  PostsVariables,
+  usePosts,
+} from '@features/posts/queries/__generated__/Posts'
 
 const Home: NextPage = () => {
-  const { data } = generatedApi.usePostsQuery()
-
-  console.log('Home', data?.list)
+  const [{ data }] = usePosts()
 
   return (
     <Container maxWidth="lg" sx={{ textAlign: 'center' }}>
@@ -28,4 +33,27 @@ const Home: NextPage = () => {
   )
 }
 
-export default Home
+export async function getServerSideProps() {
+  const ssrCache = ssrExchange({ isClient: false })
+  const client = initUrqlClient(
+    {
+      url: 'http://backend:1337/graphql',
+      exchanges: [dedupExchange, cacheExchange, ssrCache, fetchExchange],
+    },
+    false,
+  )
+
+  await client?.query<Posts, PostsVariables>(PostsDocument, {}).toPromise()
+
+  return {
+    props: {
+      urqlState: ssrCache.extractData(),
+    },
+  }
+}
+
+export default withUrqlClient(() => {
+  return {
+    url: 'http://localhost:900/graphql',
+  }
+})(Home)

@@ -1,4 +1,3 @@
-import { PostList } from '@features/posts/types'
 import React from 'react'
 import { PostsCard } from '../posts-card'
 

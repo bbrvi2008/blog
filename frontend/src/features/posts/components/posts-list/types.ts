@@ -1,3 +1,3 @@
-import { PostsQuery } from '@services/graphql-api/graphql'
+import { Posts } from '@features/posts/queries/__generated__/Posts'
 
-export type PostsListProps = PostsQuery['list']
+export type PostsListProps = Posts['list']
