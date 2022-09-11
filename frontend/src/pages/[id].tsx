@@ -1,10 +1,9 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
 import ReactMarkdown from 'react-markdown'
 import { useRouter } from 'next/router'
 import { Box, Container } from '@mui/material'
-import { generatedApi } from '@services/graphql-api'
+import { usePost } from '@features/posts/queries/__generated__/Post'
 
 export type PostProps = {
   id: string
@@ -18,7 +17,7 @@ const Post: NextPage<PostProps> = () => {
   const { query } = useRouter()
   const { id } = query as PostParams
 
-  const { data, isFetching } = generatedApi.usePostQuery({ id })
+  const [{ data }] = usePost({ variables: { id } })
 
   return (
     <Container maxWidth="lg" sx={{ textAlign: 'center' }}>

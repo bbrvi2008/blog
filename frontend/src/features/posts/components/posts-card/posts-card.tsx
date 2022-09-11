@@ -1,4 +1,3 @@
-import { Post } from '@features/posts/types'
 import {
   Box,
   Card,
@@ -44,12 +43,8 @@ const PostsCard: React.FC<PostsCardProps> = ({ id, attributes }) => {
                 />
               )}
               {attributes?.createdAt && (
-                <Typography
-                  component="div"
-                  variant="subtitle1"
-                  color="text.secondary"
-                >
-                  {new Date(attributes.createdAt).toLocaleDateString()}
+                <Typography component="div" variant="subtitle1" color="text.secondary">
+                  {new Date(attributes.createdAt).toUTCString()}
                 </Typography>
               )}
             </Box>
@@ -57,11 +52,7 @@ const PostsCard: React.FC<PostsCardProps> = ({ id, attributes }) => {
               <Typography component="div" variant="h5">
                 {attributes.title}
               </Typography>
-              <Typography
-                component="div"
-                variant="subtitle1"
-                color="text.secondary"
-              >
+              <Typography component="div" variant="subtitle1" color="text.secondary">
                 {attributes.description}
               </Typography>
             </Box>

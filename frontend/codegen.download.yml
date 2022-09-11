@@ -1,0 +1,9 @@
+overwrite: true
+watch: true
+schema: 'http://localhost:900/graphql'
+generates:
+  ./schema.graphql:
+    plugins:
+      - schema-ast
+    config:
+      includeDirectives: false

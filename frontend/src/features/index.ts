@@ -1,1 +1,1 @@
-export * as posts from "./posts";
+export * as posts from './posts'

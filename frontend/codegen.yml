@@ -1,19 +1,40 @@
 overwrite: true
 watch: true
-schema: 'http://localhost:900/graphql'
+schema:
+  - schema.graphql
 documents: './src/**/*.graphql'
 generates:
-  src/services/graphql-api/graphql.ts:
+  src/__generated__/types.ts:
     plugins:
       - typescript:
-          skipTypename: true
+        skipTypename: true
+    config:
+      scalars:
+        Date: 'string'
+  src/:
+    preset: near-operation-file
+    presetConfig:
+      folder: __generated__
+      extension: .tsx
+      baseTypesPath: __generated__/types.ts
+    plugins:
+      - add:
+          content:
+            - '// 🛑 NOTICE: __generated__ folders should be added to .gitignore'
+            - '// 🛑 In this repo I keep generated files only for demo purposes!'
       - typescript-operations:
-          preResolveTypes: false
-          skipTypeNameForRoot: true
-          skipTypename: true
-      - typescript-rtk-query:
-          importBaseApiFrom: 'src/services/graphql-api/base-api'
-          exportHooks: true
+        preResolveTypes: false
+        skipTypeNameForRoot: true
+        skipTypename: true
+      - typescript-urql
     config:
       maybeValue: T
       avoidOptionals: true
+      documentMode: 'documentNodeImportFragments'
+      namingConvention: keep
+      nonOptionalTypename: true
+      dedupeOperationSuffix: true
+      omitOperationSuffix: true
+      withComponent: false
+      withHooks: true
+      withHOC: false
