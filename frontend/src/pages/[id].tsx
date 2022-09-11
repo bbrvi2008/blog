@@ -3,17 +3,16 @@ import Head from 'next/head'
 import ReactMarkdown from 'react-markdown'
 import { useRouter } from 'next/router'
 import { Box, Container } from '@mui/material'
-import { usePost } from '@features/posts/queries/__generated__/Post'
-
-export type PostProps = {
-  id: string
-}
+import { PostDocument, PostVariables, usePost } from '@features/posts/queries/__generated__/Post'
+import { withUrqlClient } from 'next-urql'
+import { buildUrqlGetServerSideProps, getClientConfig } from '@services/graphql-api'
+import { Post } from '@features/posts/types'
 
 export type PostParams = {
   id: string
 }
 
-const Post: NextPage<PostProps> = () => {
+const Post: NextPage = () => {
   const { query } = useRouter()
   const { id } = query as PostParams
 
@@ -46,4 +45,13 @@ const Post: NextPage<PostProps> = () => {
   )
 }
 
-export default Post
+export const getServerSideProps = buildUrqlGetServerSideProps<PostParams>(
+  async (client, { params }) => {
+    const { id } = params ?? {}
+    if (id) {
+      await client?.query<Post, PostVariables>(PostDocument, { id }).toPromise()
+    }
+  },
+)
+
+export default withUrqlClient(getClientConfig)(Post)
