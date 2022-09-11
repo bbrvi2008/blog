@@ -1,8 +1,7 @@
 import { PostsList } from '@features/posts'
 import { Container } from '@mui/material'
 
-import { withUrqlClient, initUrqlClient } from 'next-urql'
-import { ssrExchange, dedupExchange, cacheExchange, fetchExchange } from 'urql'
+import { withUrqlClient } from 'next-urql'
 
 import type { NextPage } from 'next'
 import Head from 'next/head'
@@ -12,6 +11,7 @@ import {
   PostsVariables,
   usePosts,
 } from '@features/posts/queries/__generated__/Posts'
+import { buildUrqlGetServerSideProps, getClientConfig } from '@services/graphql-api'
 
 const Home: NextPage = () => {
   const [{ data }] = usePosts()
@@ -33,27 +33,8 @@ const Home: NextPage = () => {
   )
 }
 
-export async function getServerSideProps() {
-  const ssrCache = ssrExchange({ isClient: false })
-  const client = initUrqlClient(
-    {
-      url: 'http://backend:1337/graphql',
-      exchanges: [dedupExchange, cacheExchange, ssrCache, fetchExchange],
-    },
-    false,
-  )
-
+export const getServerSideProps = buildUrqlGetServerSideProps(async (client) => {
   await client?.query<Posts, PostsVariables>(PostsDocument, {}).toPromise()
+})
 
-  return {
-    props: {
-      urqlState: ssrCache.extractData(),
-    },
-  }
-}
-
-export default withUrqlClient(() => {
-  return {
-    url: 'http://localhost:900/graphql',
-  }
-})(Home)
+export default withUrqlClient(getClientConfig)(Home)
