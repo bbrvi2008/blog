@@ -3,10 +3,11 @@ import { initUrqlClient, NextUrqlClientConfig } from 'next-urql'
 import { ParsedUrlQuery } from 'querystring'
 import { cacheExchange, dedupExchange, fetchExchange, ssrExchange } from 'urql'
 import { DataFetcher, PageProps } from './types'
+import { config } from '@services'
 
 export const getClientConfig: NextUrqlClientConfig = () => {
   return {
-    url: 'http://localhost:900/graphql',
+    url: config.clientUrlApi,
   }
 }
 
@@ -17,7 +18,7 @@ export const buildUrqlGetServerSideProps = <Q extends ParsedUrlQuery = ParsedUrl
     const ssrCache = ssrExchange({ isClient: false })
     const client = initUrqlClient(
       {
-        url: 'http://backend:1337/graphql',
+        url: config.serverUrlApi,
         exchanges: [dedupExchange, cacheExchange, ssrCache, fetchExchange],
       },
       false,
